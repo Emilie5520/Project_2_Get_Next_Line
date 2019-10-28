@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// pas besoin define BUFFER SIZE, compile le programme avec
-
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 #include <sys/types.h>
@@ -24,6 +22,10 @@
 int     get_next_line(int fd, char **line);
 char	*ft_putstr(char *str);
 char	*ft_strjoin(char *s1, char *s2);
-char	*ft_strcat(char *dest, char *src);
+char 	*ft_strchr_remix(char *s, int c);
+char 	*ft_strjoin(char *s1, char *s2);
+char	*ft_strnew(size_t size);
+char	*ft_strdup(char *src);
+
 
 #endif

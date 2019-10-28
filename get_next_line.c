@@ -11,27 +11,52 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+// s'arrete bien au \n mais si BUFFER_SIZE trop grand/petit bug (prevoir protection)
 
-int	get_next_line(int fd, char **line)
+char	*ft_find_line(int fd)
 {
-	int		ret;
-	int		i;
-	char	buf[BUFFER_SIZE + 1];
 	char	*str;
+	int		ret;
+	char	buf[BUFFER_SIZE + 1];
+	char 	*tmp;
+	int		i;
 
-	printf("CHECK");
-	ret = (read(fd, buf, BUFFER_SIZE));
-	buf[ret] = '\0';
-	i = 0;
-	printf("CHEEEECK")
-	while (buf[i] != '\n' && buf) // s'arrete bien au \n mais si BUFFER_SIZE trop grand/petit bug (prevoir protection)
-	//ft_putstr(buf);
+	while ((ret = (read(fd, buf, BUFFER_SIZE))) > 0)
 	{
-		//ft_putchar(buf[i]);
-		printf("CHEEECK")
-		str = ft_strjoin(str, buf);
-		//str = ft_strcat(str,  buf);
+		i = 0;
+		buf[ret] = '\0';
+		if (str == NULL)
+			str = ft_strdup(buf);
+		else
+			tmp = ft_strjoin(str, buf);
+		while (str[i] != '\0')
+		{
+			if (str[i] == '\n')
+			{
+				//printf("Break");
+				break;
+			}
+			i++;
+		}
+	}
+	ft_putstr(str);
+	return (str);
+}
+
+/*
+int		get_next_line(int fd, char **line)
+{
+	int		i;
+
+	while (buf[i] != '\0' && buf[i])
+	i = 0;
+	{
+		str = ft_strjoin(str, buf)
+		ft_strchr(str, '\n');
 		i++;
 	}
+	ft_putstr("===========");
+	ft_putstr(buf);
 	return (0);
 }
+*/
