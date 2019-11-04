@@ -11,52 +11,71 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-// s'arrete bien au \n mais si BUFFER_SIZE trop grand/petit bug (prevoir protection)
 
-char	*ft_find_line(int fd)
+char	*ft_find_line(int fd, char *str)
 {
-	char	*str;
 	int		ret;
 	char	buf[BUFFER_SIZE + 1];
-	char 	*tmp;
-	int		i;
 
 	while ((ret = (read(fd, buf, BUFFER_SIZE))) > 0)
 	{
-		i = 0;
 		buf[ret] = '\0';
 		if (str == NULL)
 			str = ft_strdup(buf);
 		else
-			tmp = ft_strjoin(str, buf);
-		while (str[i] != '\0')
-		{
-			if (str[i] == '\n')
-			{
-				//printf("Break");
-				break;
-			}
-			i++;
-		}
+			str = ft_strjoin(str, buf);
 	}
-	ft_putstr(str);
+	//printf("%s\n", str);
 	return (str);
 }
 
-/*
 int		get_next_line(int fd, char **line)
 {
+	static char 	*save;
 	int		i;
 
-	while (buf[i] != '\0' && buf[i])
+	if (ft_memcmp(save, *line))
+		save = ft_find_line(fd, save);
+	printf("%s\n", save);
 	i = 0;
+	if (!fd || !line)
+		return (-1);
+	printf("TEST2\n");
+	if(save[i])
 	{
-		str = ft_strjoin(str, buf)
-		ft_strchr(str, '\n');
-		i++;
+		printf("TEST3\n");
+		while (save[i] && save[i] != '\n')
+			i++;
+		printf("%d\n", i);
+		if (i > 0)
+		{
+			printf("TEST5\n");
+			*line = ft_strsub(save, 0, i);
+			printf("%s\n", *line);
+			printf("TEST6\n");
+			save = &save[i + 1];
+			printf("TEST7\n");
+
+		}
+		return (1);		
 	}
-	ft_putstr("===========");
-	ft_putstr(buf);
 	return (0);
 }
-*/
+
+/*int		get_next_line_split(int fd, char **line)
+{
+	static int		i;
+	static char		str;
+	char	buf[BUFFER_SIZE + 1];
+
+	i = 0;
+	while ((ret = (read(fd, buf, BUFFER_SIZE))) > 0)
+	{
+		buf[ret] = '\0';
+		if (str == NULL)
+			str = ft_strdup(buf);
+		else
+			str = ft_strjoin(str, buf);
+	}
+	
+}*/

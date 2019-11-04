@@ -16,15 +16,14 @@ int	 main(int argc, char **argv)
 {
 	int		fd;
 	char	*line;
-
+	int		s;
+	char	*str;
+	printf("TEST0\n");
 	line = NULL;
+	(void)argc;
 	fd = (open(argv[1], O_RDONLY));
-	if (fd == -1)
-	{
-		ft_putstr("error");
-		return (0);
-	}
-	ft_find_line(fd);
-	//get_next_line(fd, &line);
+	//s = ft_find_line(fd, str);
+	s = get_next_line(fd, &line);
+	printf("%d\n", s);
 	return (0);
 }

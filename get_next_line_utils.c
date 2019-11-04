@@ -12,23 +12,6 @@
 
 #include "get_next_line.h"
 
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
-char	*ft_putstr(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		ft_putchar(str[i]);
-		i++;
-	}
-	return (str);
-}
 
 int	ft_strlen(char const *str)
 {
@@ -40,18 +23,26 @@ int	ft_strlen(char const *str)
 	return (i);
 }
 
-char 	*ft_strchr_remix(char *s, int c)
+/*char 	*ft_strchr_remix(char *s, int c)
 {	
 	char	*tmp;
 	int 	i;
 
 	i = 0;
-	while (*s != '\0' && *s != c)
+	while (s[i] != '\0' && s[i] != c)
 	{
-		ft_putchar(*s);
-		s++;
-	}	
-}
+		i++;
+	}
+	tmp = (char*)malloc(sizeof(char) * i + 1);
+	i = 0;
+	while (s[i] != '\0' && s[i] != c)
+	{
+		tmp[i] = s[i];
+		i++;
+	}
+	tmp[i] = '\0';
+	return (tmp);
+}*/
 
 char 	*ft_strjoin(char *s1, char *s2)
 {
@@ -82,26 +73,6 @@ char 	*ft_strjoin(char *s1, char *s2)
 	return (s3);	
 }
 
-
-char	*ft_strnew(size_t size)
-{
-	char		*str;
-	size_t		i;
-	
-	str = (char *)malloc(sizeof(char) * size + 1);
-	if (str == NULL || size == 0)
-		return (NULL);
-	i = 0;
-	while (i < size)
-	{
-		str[i] = '\0';
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
-}
-
-
 char	*ft_strdup(char *src)
 {
 	int	i;
@@ -126,4 +97,110 @@ char	*ft_strdup(char *src)
 	}
 	dest[i] = '\0';
 	return (dest);
+}
+
+char	*ft_strsub(const char *s, unsigned int start, size_t len)
+{
+	char 		*str;
+	size_t 		i;
+
+	i = 0;
+	if ( s == NULL)
+		return (NULL);
+	if (start > ft_strlen(s))
+		return (NULL);
+	str = (char *)malloc(sizeof(char) * len + 1);
+	if (str == NULL)
+		return (NULL);
+	while (i < len && s[start])
+	{
+		str[i] = s[start];
+		start++;
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+int		strlen_like(char *str, char c)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+			j++;
+		i++;
+	}
+	return (i - j);
+}
+
+int		count_words(char *str, char c)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (str[i] != '\0')
+	{
+		if ((str[i] != c && str[i + 1] == c)
+				|| (str[i] != c && str[i + 1] == '\0'))
+			count += 1;
+		i++;
+	}
+	return (count);
+}
+
+char	*strdup_like(char *src, char c)
+{
+	int		i;
+	int		j;
+	char	*dest;
+
+	i = 0;
+	j = 0;
+	dest = (char *)malloc(sizeof(char) * (strlen_like(src, c) + 1));
+	if (dest == NULL)
+	{
+		free(dest);
+		return (NULL);
+	}
+	while (src[i] != '\0' && src[i] != c)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	int		i;
+	int		j;
+	char	**res;
+	char	*str;
+
+	i = 0;
+	j = 0;
+	str = (char *)s;
+	if (s == NULL)
+		return (NULL);
+	res = (char **)malloc(sizeof(char *) * count_words(str, c) + 1);
+	if (res == NULL)
+		return (NULL);
+	while (i < count_words(str, c))
+	{
+		while (str[j] && str[j] == c)
+			j++;
+		res[i] = strdup_like(&str[j], c);
+		while (str[j] && str[j] != c)
+			j++;
+		i++;
+	}
+	res[i] = 0;
+	return (res);
 }
